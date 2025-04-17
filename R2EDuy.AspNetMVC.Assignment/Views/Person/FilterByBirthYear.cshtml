@@ -1,0 +1,29 @@
+﻿@model List<Person>
+@{
+    ViewData["Title"] = "List of people filtered by birth year";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form method="get" asp-controller="Person" asp-action="FilterByBirthYear">
+    <label for="year">Input Year:</label>
+    <input type="number" class="form-control" name="year" value="@ViewBag.Year" required />
+
+
+    <label for="choice">Filter Type:</label>
+    <select name="choice" id="choice" class="form-select">
+        <option value="equal" selected="@(ViewBag.Choice == "equal")">Equal</option>
+        <option value="greater" selected="@(ViewBag.Choice == "greater")">Greater than</option>
+        <option value="less" selected="@(ViewBag.Choice == "less")">Less than</option>
+    </select>
+
+    <button type="submit" class="btn btn-primary mt-2">Filter</button>
+</form>
+
+<h3>Filtered Members</h3>
+<ul>
+    @foreach (var person in Model)
+    {
+        <li>@person.FullName - @person.DateOfBirth.Year</li>
+    }
+</ul>

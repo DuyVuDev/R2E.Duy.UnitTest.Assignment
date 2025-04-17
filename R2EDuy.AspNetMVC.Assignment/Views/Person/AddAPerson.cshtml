@@ -1,0 +1,53 @@
+﻿@model Person
+
+<h2>Add New Person</h2>
+
+<form asp-action="AddAPerson" method="post">
+    <div class="mb-3">
+        <label class="form-label">First Name</label>
+        <input type="text" class="form-control" asp-for="FirstName" required />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Last Name</label>
+        <input type="text" class="form-control" asp-for="LastName" required />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Gender</label>
+        <select class="form-select" asp-for="Gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Date of Birth</label>
+        <input type="date" class="form-control" asp-for="DateOfBirth" required />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Phone Number</label>
+        <input type="text" class="form-control" pattern="^\d{10}$" title="Phone number must be exactly 10 digits" asp-for="PhoneNumber" required />
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Birth Place</label>
+        <input type="text" class="form-control" asp-for="BirthPlace" required />
+        <span asp-validation-for="BirthPlace" class="text-danger"></span>
+
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Graduated</label>
+        <input type="checkbox" asp-for="IsGraduated" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Person</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

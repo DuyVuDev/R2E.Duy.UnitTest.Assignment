@@ -1,0 +1,13 @@
+﻿@model List<Person>
+@{
+    ViewData["Title"] = "List of males";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<ul>
+    @foreach (var person in Model)
+    {
+        <li>@person.FullName - @person.BirthPlace</li>
+    }
+</ul>

@@ -1,0 +1,46 @@
+﻿@model R2EDuy.AspNetMVC.Assignment.Models.Person
+
+<div class="d-flex justify-content-between">
+    <h2>Person Details</h2>
+    <form asp-action="DeleteAPerson" method="post" style="display:inline;" onsubmit="return confirm('Are you sure?');">
+        <input type="hidden" name="id" value="@Model.Id" />
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+</div>
+
+<div class="mb-3">
+    <label class="form-label">First Name</label>
+    <input type="text" class="form-control" value="@Model.FirstName" readonly />
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Last Name</label>
+    <input type="text" class="form-control" value="@Model.LastName" readonly />
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Gender</label>
+    <input type="text" class="form-control" value="@Model.Gender" readonly />
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Date of Birth</label>
+    <input type="text" class="form-control" value="@Model.DateOfBirth.ToString("yyyy-MM-dd")" readonly />
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Phone Number</label>
+    <input type="text" class="form-control" value="@Model.PhoneNumber" pattern="^\d{10}$" readonly />
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Birth Place</label>
+    <input type="text" class="form-control" value="@Model.BirthPlace" readonly />
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Graduated</label>
+    <input type="text" class="form-control" value="@(Model.IsGraduated ? "Yes" : "No")" readonly />
+</div>
+
+<a asp-action="Index" class="btn btn-secondary">Back to List</a>

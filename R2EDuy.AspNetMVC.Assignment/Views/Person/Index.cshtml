@@ -1,0 +1,68 @@
+﻿@model PagedResult<Person>
+
+@{
+    ViewData["Title"] = "Members List";
+}
+
+<h1>@ViewData["Title"]</h1>
+<nav class="d-flex justify-content-between">
+    <a href="@Url.Action("ExportToExcel", "Person")" class="btn btn-success">Export to Excel</a>
+    <a href="@Url.Action("AddAPerson", "Person")" class="btn btn-warning">Add new</a>
+</nav>
+
+<table class="table table-striped">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Birth Date</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Birth Place</th>
+            <th scope="col">Graduated</th>
+            <th scope="col" class="text-center">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Items != null)
+        {
+            @foreach (var person in Model.Items)
+            {
+                <tr>
+                    <td>
+                        <a asp-action="ViewAPerson" asp-route-id="@person.Id">@person.FirstName @person.LastName</a>
+                    </td>
+                    <td>@person.Gender</td>
+                    <td>@person.DateOfBirth.ToShortDateString()</td>
+                    <td>@person.PhoneNumber</td>
+                    <td>@person.BirthPlace</td>
+                    <td>@(person.IsGraduated ? "Yes" : "No")</td>
+                    <td class="text-center">
+                        <a asp-action="ViewAPerson" asp-route-id="@person.Id" class="btn btn-primary">View</a>
+                        <a asp-action="EditAPerson" asp-route-id="@person.Id" class="btn btn-info">Edit</a>
+                        <form asp-action="DeleteAPerson" method="post" style="display:inline;" onsubmit="return confirm('Are you sure?');">
+                            <input type="hidden" name="id" value="@person.Id" />
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<nav>
+    <ul class="pagination">
+        <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+            <a class="page-link" href="@Url.Action("Index", new { pageNumber = Model.PageNumber - 1, pageSize = Model.PageSize })">Previous</a>
+        </li>
+        @for (int i = 1; i <= (Model.TotalRecords + Model.PageSize - 1) / Model.PageSize; i++)
+        {
+            <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { pageNumber = i, pageSize = Model.PageSize })">@i</a>
+            </li>
+        }
+        <li class="page-item @(Model.PageNumber == (Model.TotalRecords + Model.PageSize - 1) / Model.PageSize ? "disabled" : "")">
+            <a class="page-link" href="@Url.Action("Index", new { pageNumber = Model.PageNumber + 1, pageSize = Model.PageSize })">Next</a>
+        </li>
+    </ul>
+</nav>

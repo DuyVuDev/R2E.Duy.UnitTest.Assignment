@@ -1,5 +1,7 @@
 ﻿using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Moq;
 using R2EDuy.AspNetMVC.Assignment.Models;
 using R2EDuy.AspNetMVC.Assignment.Services;
@@ -39,10 +41,10 @@ namespace TestProject.Controller
             _personServiceMock
                 .Setup(s => s.GetPagedPersons(pageNumber, pageSize))
                 .Returns(expectedPagedResult);
-            var _controller = CreateController();
+            var controller = CreateController();
 
             // Act
-            var result = _controller.Index(pageNumber, pageSize);
+            var result = controller.Index(pageNumber, pageSize);
 
             // Assert
             var viewResult = result.Should().BeOfType<ViewResult>().Subject;
@@ -74,10 +76,10 @@ namespace TestProject.Controller
                 .Setup(s => s.GetPagedPersons(defaultPageNumber, defaultPageSize))
                 .Returns(expectedResult);
 
-            var _controller = CreateController();
+            var controller = CreateController();
 
             // Act
-            var result = _controller.Index();
+            var result = controller.Index();
 
             // Assert
             var viewResult = result.Should().BeOfType<ViewResult>().Subject;
@@ -100,10 +102,10 @@ namespace TestProject.Controller
                 .Setup(s => s.GetMales())
                 .Returns(expectedMales);
 
-            var _controller = CreateController();
+            var controller = CreateController();
 
             // Act
-            var result = _controller.Males();
+            var result = controller.Males();
 
             // Assert
             var viewResult = result.Should().BeOfType<ViewResult>().Subject;
@@ -124,10 +126,10 @@ namespace TestProject.Controller
                 .Setup(s => s.GetMales())
                 .Returns(emptyList);
 
-            var _controller = CreateController();
+            var controller = CreateController();
 
             // Act
-            var result = _controller.Males();
+            var result = controller.Males();
 
             // Assert
             var viewResult = result.Should().BeOfType<ViewResult>().Subject;
@@ -150,10 +152,10 @@ namespace TestProject.Controller
                 .Setup(s => s.GetOldestPerson())
                 .Returns(expectedOldest);
 
-            var _controller = CreateController();
+            var controller = CreateController();
 
             // Act
-            var result = _controller.Oldest();
+            var result = controller.Oldest();
 
             // Assert
             var viewResult = result.Should().BeOfType<ViewResult>().Subject;
@@ -172,10 +174,10 @@ namespace TestProject.Controller
                 .Setup(s => s.GetOldestPerson())
                 .Returns((Person)null);
 
-            var _controller = CreateController();
+            var controller = CreateController();
 
             // Act
-            var result = _controller.Oldest();
+            var result = controller.Oldest();
 
             // Assert
             var viewResult = result.Should().BeOfType<ViewResult>().Subject;
@@ -197,10 +199,10 @@ namespace TestProject.Controller
                 .Setup(s => s.GetFullNames())
                 .Returns(expectedFullNames);
 
-            var _controller = CreateController();
+            var controller = CreateController();
 
             // Act
-            var result = _controller.FullNames();
+            var result = controller.FullNames();
 
             // Assert
             var viewResult = result.Should().BeOfType<ViewResult>().Subject;
@@ -221,10 +223,10 @@ namespace TestProject.Controller
                 .Setup(s => s.GetFullNames())
                 .Returns(expectedFullNames);
 
-            var _controller = CreateController();
+            var controller = CreateController();
 
             // Act
-            var result = _controller.FullNames();
+            var result = controller.FullNames();
 
             // Assert
             var viewResult = result.Should().BeOfType<ViewResult>().Subject;
@@ -250,10 +252,10 @@ namespace TestProject.Controller
                 .Setup(s => s.FilterByBirthYear(year, choice))
                 .Returns(expectedResults);
 
-            var _controller = CreateController();
+            var controller = CreateController();
 
             // Act
-            var result = _controller.FilterByBirthYear(year, choice);
+            var result = controller.FilterByBirthYear(year, choice);
 
             // Assert
             var viewResult = result.Should().BeOfType<ViewResult>().Subject;
@@ -261,8 +263,8 @@ namespace TestProject.Controller
             model.Should().BeEmpty();
 
             // Check ViewBag
-            ((int)_controller.ViewBag.Year).Should().Be(year); // Fixed dynamic typing issue by casting ViewBag.Year to int
-            ((string)_controller.ViewBag.Choice).Should().Be(choice); // Fixed dynamic typing issue by casting ViewBag.Choice to string
+            ((int)controller.ViewBag.Year).Should().Be(year); // Fixed dynamic typing issue by casting ViewBag.Year to int
+            ((string)controller.ViewBag.Choice).Should().Be(choice); // Fixed dynamic typing issue by casting ViewBag.Choice to string
 
             _personServiceMock.Verify(s => s.FilterByBirthYear(year, choice), Times.Once);
         }
@@ -283,10 +285,10 @@ namespace TestProject.Controller
                 .Setup(s => s.FilterByBirthYear(year, choice))
                 .Returns(expectedResults);
 
-            var _controller = CreateController();
+            var controller = CreateController();
 
             // Act
-            var result = _controller.FilterByBirthYear(year, choice);
+            var result = controller.FilterByBirthYear(year, choice);
 
             // Assert
             var viewResult = result.Should().BeOfType<ViewResult>().Subject;
@@ -294,8 +296,8 @@ namespace TestProject.Controller
             model.Should().BeEmpty();
 
             // Check ViewBag
-            ((int)_controller.ViewBag.Year).Should().Be(year); // Fixed dynamic typing issue by casting ViewBag.Year to int
-            ((string)_controller.ViewBag.Choice).Should().Be(choice); // Fixed dynamic typing issue by casting ViewBag.Choice to string
+            ((int)controller.ViewBag.Year).Should().Be(year); // Fixed dynamic typing issue by casting ViewBag.Year to int
+            ((string)controller.ViewBag.Choice).Should().Be(choice); // Fixed dynamic typing issue by casting ViewBag.Choice to string
 
             _personServiceMock.Verify(s => s.FilterByBirthYear(year, choice), Times.Once);
         }
@@ -317,18 +319,18 @@ namespace TestProject.Controller
                 .Setup(s => s.FilterByBirthYear(year, choice))
                 .Returns(expectedResults);
 
-            var _controller = CreateController();
+            var controller = CreateController();
 
             // Act
-            var result = _controller.FilterByBirthYear(year, choice);
+            var result = controller.FilterByBirthYear(year, choice);
 
             // Assert
             var viewResult = result.Should().BeOfType<ViewResult>().Subject;
             viewResult.Model.Should().BeEquivalentTo(expectedResults);
 
             // Check ViewBag
-            ((int)_controller.ViewBag.Year).Should().Be(year); // Fixed dynamic typing issue by casting ViewBag.Year to int
-            ((string)_controller.ViewBag.Choice).Should().Be(choice); // Fixed dynamic typing issue by casting ViewBag.Choice to string
+            ((int)controller.ViewBag.Year).Should().Be(year); // Fixed dynamic typing issue by casting ViewBag.Year to int
+            ((string)controller.ViewBag.Choice).Should().Be(choice); // Fixed dynamic typing issue by casting ViewBag.Choice to string
 
             _personServiceMock.Verify(s => s.FilterByBirthYear(year, choice), Times.Once);
         }
@@ -350,18 +352,18 @@ namespace TestProject.Controller
                 .Setup(s => s.FilterByBirthYear(year, choice))
                 .Returns(expectedResults);
 
-            var _controller = CreateController();
+            var controller = CreateController();
 
             // Act
-            var result = _controller.FilterByBirthYear(year, choice);
+            var result = controller.FilterByBirthYear(year, choice);
 
             // Assert
             var viewResult = result.Should().BeOfType<ViewResult>().Subject;
             viewResult.Model.Should().BeEquivalentTo(expectedResults);
 
             // Check ViewBag
-            ((int)_controller.ViewBag.Year).Should().Be(year); // Fixed dynamic typing issue by casting ViewBag.Year to int
-            ((string)_controller.ViewBag.Choice).Should().Be(choice); // Fixed dynamic typing issue by casting ViewBag.Choice to string
+            ((int)controller.ViewBag.Year).Should().Be(year); // Fixed dynamic typing issue by casting ViewBag.Year to int
+            ((string)controller.ViewBag.Choice).Should().Be(choice); // Fixed dynamic typing issue by casting ViewBag.Choice to string
 
             _personServiceMock.Verify(s => s.FilterByBirthYear(year, choice), Times.Once);
         }
@@ -383,18 +385,18 @@ namespace TestProject.Controller
                 .Setup(s => s.FilterByBirthYear(year, choice))
                 .Returns(expectedResults);
 
-            var _controller = CreateController();
+            var controller = CreateController();
 
             // Act
-            var result = _controller.FilterByBirthYear(year, choice);
+            var result = controller.FilterByBirthYear(year, choice);
 
             // Assert
             var viewResult = result.Should().BeOfType<ViewResult>().Subject;
             viewResult.Model.Should().BeEquivalentTo(expectedResults);
 
             // Check ViewBag
-            ((int)_controller.ViewBag.Year).Should().Be(year); // Fixed dynamic typing issue by casting ViewBag.Year to int
-            ((string)_controller.ViewBag.Choice).Should().Be(choice); // Fixed dynamic typing issue by casting ViewBag.Choice to string
+            ((int)controller.ViewBag.Year).Should().Be(year); // Fixed dynamic typing issue by casting ViewBag.Year to int
+            ((string)controller.ViewBag.Choice).Should().Be(choice); // Fixed dynamic typing issue by casting ViewBag.Choice to string
 
             _personServiceMock.Verify(s => s.FilterByBirthYear(year, choice), Times.Once);
         }
@@ -404,13 +406,275 @@ namespace TestProject.Controller
         {
             // Arrange
             SetUpDependencies();
-            var _controller = CreateController();
+            var controller = CreateController();
 
             // Act
-            var result = _controller.AddAPerson();
+            var result = controller.AddAPerson();
 
             // Assert
             result.Should().BeOfType<ViewResult>();
+        }
+
+        [Fact]
+        public void AddAPerson_Post_ValidPerson_CreatesPersonAndRedirects()
+        {
+            // Arrange
+            SetUpDependencies();
+            var person = PeopleDataSamples.GetSamplePeople().First();
+            var controller = CreateController();
+            controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
+
+            // Act
+            var result = controller.AddAPerson(person);
+
+            // Assert
+            result.Should().BeOfType<RedirectToActionResult>()
+                  .Which.ActionName.Should().Be("Index");
+
+            controller.TempData["Message"].Should().Be($"Person {person.FullName} added successfully.");
+            _personServiceMock.Verify(s => s.CreatePerson(person), Times.Once);
+        }
+
+        [Fact]
+        public void AddAPerson_Post_WhenException_ReturnsErrorMessageAndRedirects()
+        {
+            // Arrange
+            SetUpDependencies();
+            var person = PeopleDataSamples.GetSamplePeople().First();
+            _personServiceMock.Setup(s => s.CreatePerson(person)).Throws(new Exception("Database error"));
+
+            var controller = CreateController();
+            controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
+
+            // Act
+            var result = controller.AddAPerson(person);
+
+            // Assert
+            result.Should().BeOfType<RedirectToActionResult>()
+                  .Which.ActionName.Should().Be("Index");
+
+            controller.TempData["Message"].Should().Be($"Error adding person {person.FullName}.");
+            _personServiceMock.Verify(s => s.CreatePerson(person), Times.Once);
+        }
+
+        [Fact]
+        public void ViewAPerson_ExistingId_ReturnsViewWithPerson()
+        {
+            // Arrange
+            SetUpDependencies();
+            var person = PeopleDataSamples.GetSamplePeople().First();
+            _personServiceMock.Setup(s => s.GetPerson(person.Id)).Returns(person);
+            var controller = CreateController();
+
+            // Act
+            var result = controller.ViewAPerson(person.Id);
+
+            // Assert
+            var viewResult = result.Should().BeOfType<ViewResult>().Subject;
+            viewResult.Model.Should().BeEquivalentTo(person);
+            _personServiceMock.Verify(s => s.GetPerson(person.Id), Times.Once);
+        }
+
+        [Fact]
+        public void ViewAPerson_NonExistingId_ReturnsNotFound()
+        {
+            // Arrange
+            SetUpDependencies();
+            var nonExistingId = Guid.NewGuid();
+            _personServiceMock.Setup(s => s.GetPerson(nonExistingId)).Returns((Person)null);
+            var controller = CreateController();
+
+            // Act
+            var result = controller.ViewAPerson(nonExistingId);
+
+            // Assert
+            result.Should().BeOfType<NotFoundResult>();
+            _personServiceMock.Verify(s => s.GetPerson(nonExistingId), Times.Once);
+        }
+
+        [Fact]
+        public void EditAPerson_Get_ExistingId_ReturnsViewWithPerson()
+        {
+            // Arrange
+            SetUpDependencies();
+            var person = PeopleDataSamples.GetSamplePeople().First();
+            _personServiceMock.Setup(s => s.GetPerson(person.Id)).Returns(person);
+            var controller = CreateController();
+
+            // Act
+            var result = controller.EditAPerson(person.Id);
+
+            // Assert
+            var viewResult = result.Should().BeOfType<ViewResult>().Subject;
+            viewResult.Model.Should().BeEquivalentTo(person);
+            _personServiceMock.Verify(s => s.GetPerson(person.Id), Times.Once);
+        }
+
+        [Fact]
+        public void EditAPerson_Get_NonExistingId_ReturnsNotFound()
+        {
+            // Arrange
+            SetUpDependencies();
+            var id = Guid.NewGuid();
+            _personServiceMock.Setup(s => s.GetPerson(id)).Returns((Person)null);
+            var controller = CreateController();
+
+            // Act
+            var result = controller.EditAPerson(id);
+
+            // Assert
+            result.Should().BeOfType<NotFoundResult>();
+            _personServiceMock.Verify(s => s.GetPerson(id), Times.Once);
+        }
+
+        [Fact]
+        public void EditAPerson_Post_ValidUpdate_ReturnsRedirectToIndex()
+        {
+            // Arrange
+            SetUpDependencies();
+            var person = PeopleDataSamples.GetSamplePeople().First();
+            _personServiceMock.Setup(s => s.UpdatePerson(person.Id, person)).Returns(true);
+            var controller = CreateController();
+            controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
+
+
+            // Act
+            var result = controller.EditAPerson(person);
+
+            // Assert
+            var redirectResult = result.Should().BeOfType<RedirectToActionResult>().Subject;
+            redirectResult.ActionName.Should().Be("Index");
+            controller.TempData["Message"].Should().Be($"Person {person.FullName} edited successfully.");
+            _personServiceMock.Verify(s => s.UpdatePerson(person.Id, person), Times.Once);
+        }
+
+        [Fact]
+        public void EditAPerson_Post_UpdateReturnsFalse_ReturnsNotFound()
+        {
+            // Arrange
+            SetUpDependencies();
+            var person = PeopleDataSamples.GetSamplePeople().First();
+            _personServiceMock.Setup(s => s.UpdatePerson(person.Id, person)).Returns(false);
+            var controller = CreateController();
+
+
+            // Act
+            var result = controller.EditAPerson(person);
+
+            // Assert
+            result.Should().BeOfType<NotFoundResult>();
+
+            _personServiceMock.Verify(s => s.UpdatePerson(person.Id, person), Times.Once);
+        }
+
+        [Fact]
+        public void EditAPerson_Post_ThrowsException_ReturnsRedirectToIndex()
+        {
+            // Arrange
+            SetUpDependencies();
+            var person = PeopleDataSamples.GetSamplePeople().First();
+            _personServiceMock.Setup(s => s.UpdatePerson(person.Id, person)).Throws<Exception>();
+            var controller = CreateController();
+            controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
+
+            // Act
+            var result = controller.EditAPerson(person);
+
+            // Assert
+            var redirectResult = result.Should().BeOfType<RedirectToActionResult>().Subject;
+            redirectResult.ActionName.Should().Be("Index");
+            controller.TempData["Message"].Should().Be($"Error editing person {person.FullName}.");
+
+            _personServiceMock.Verify(s => s.UpdatePerson(person.Id, person), Times.Once);
+        }
+
+        [Fact]
+        public void DeleteAPerson_ValidId_DeletesAndRedirects()
+        {
+            // Arrange
+            SetUpDependencies();
+            var person = PeopleDataSamples.GetSamplePeople().First();
+            _personServiceMock.Setup(s => s.GetFullName(person.Id)).Returns(person.FullName);
+            _personServiceMock.Setup(s => s.DeletePerson(person.Id));
+            var controller = CreateController();
+            controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
+
+            // Act
+            var result = controller.DeleteAPerson(person.Id);
+
+            // Assert
+            var redirect = result.Should().BeOfType<RedirectToActionResult>().Subject;
+            redirect.ActionName.Should().Be("Index");
+            controller.TempData["Message"].Should().Be($"Person {person.FullName} deleted successfully.");
+
+            _personServiceMock.Verify(s => s.GetFullName(person.Id), Times.Once);
+            _personServiceMock.Verify(s => s.DeletePerson(person.Id), Times.Once);
+        }
+
+        [Fact]
+        public void DeleteAPerson_ExceptionThrown_ReturnsRedirectToIndexWithError()
+        {
+            // Arrange
+            SetUpDependencies();
+            var person = PeopleDataSamples.GetSamplePeople().First();
+            _personServiceMock.Setup(s => s.GetFullName(person.Id)).Returns(person.FullName);
+            _personServiceMock.Setup(s => s.DeletePerson(person.Id)).Throws<Exception>();
+            var controller = CreateController();
+            controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
+
+            // Act
+            var result = controller.DeleteAPerson(person.Id);
+
+            // Assert
+            var redirect = result.Should().BeOfType<RedirectToActionResult>().Subject;
+            redirect.ActionName.Should().Be("Index");
+            controller.TempData["Message"].Should().Be($"Error deleting person {person.FullName}.");
+
+            _personServiceMock.Verify(s => s.GetFullName(person.Id), Times.Once);
+            _personServiceMock.Verify(s => s.DeletePerson(person.Id), Times.Once);
+        }
+
+        [Fact]
+        public void ExportToExcel_ReturnsFile_WhenServiceSucceeds()
+        {
+            // Arrange
+            SetUpDependencies();
+            var fileResult = new FileContentResult(new byte[] { 1, 2, 3 }, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            {
+                FileDownloadName = "people.xlsx"
+            };
+
+            _personServiceMock.Setup(s => s.ExportToExcel()).Returns(fileResult);
+            var controller = CreateController();
+
+            // Act
+            var result = controller.ExportToExcel();
+
+            // Assert
+            var file = result.Should().BeOfType<FileContentResult>().Subject;
+            file.ContentType.Should().Be("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            file.FileDownloadName.Should().Be("people.xlsx");
+
+            _personServiceMock.Verify(s => s.ExportToExcel(), Times.Once);
+        }
+
+        [Fact]
+        public void ExportToExcel_ThrowsException_ReturnsBadRequestWithTempDataMessage()
+        {
+            // Arrange
+            SetUpDependencies();
+            _personServiceMock.Setup(s => s.ExportToExcel()).Throws<Exception>();
+            var controller = CreateController();
+            controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
+
+            // Act
+            var result = controller.ExportToExcel();
+
+            // Assert
+            result.Should().BeOfType<BadRequestResult>();
+            controller.TempData["Message"].Should().Be("Error generating Excel file.");
+
+            _personServiceMock.Verify(s => s.ExportToExcel(), Times.Once);
         }
 
     }

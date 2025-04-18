@@ -142,7 +142,7 @@ namespace TestProject.Services
             }; ;
             var service = GetPersonServices();
             // Act
-            Action act = () => service.CreatePerson(newPerson);
+
             var result = validator.TestValidate(newPerson);
             // Assert
             result.ShouldHaveAnyValidationError();
@@ -231,7 +231,7 @@ namespace TestProject.Services
             };
             var service = GetPersonServices();
             // Act
-            Action act = () => service.UpdatePerson(id, newPerson);
+
             var result = validator.TestValidate(newPerson);
             // Assert
             result.ShouldHaveAnyValidationError();

@@ -55,22 +55,13 @@ public class PersonServiceImplement : IPersonService
 
     public bool DeletePerson(Guid id)
     {
-        try
+        var existingPerson = _personRepository.GetById(id);
+        if (existingPerson == null)
         {
-            var existingPerson = _personRepository.GetById(id);
-            if (existingPerson == null)
-            {
-                return false;
-            }
-            _personRepository.Delete(id);
-            return true;
-        }
-        catch (Exception ex)
-        {
-            // Log the exception
-            Console.WriteLine($"Error deleting person: {ex.Message}");
             return false;
         }
+        _personRepository.Delete(id);
+        return true;
     }
 
     public List<Person> GetMales()
